@@ -2,10 +2,10 @@
 import axios from "axios";
 
 export async function GET(request) {
- const { searchParams } = new URL(request.url)
+  const { searchParams } = new URL(request.url)
   const name = searchParams.get('name')
   const institute = searchParams.get('institute')
-   const type = searchParams.get('type')
+  const type = searchParams.get('type')
   const year = searchParams.get('year')
 
   // Monta a query string para a FastAPI

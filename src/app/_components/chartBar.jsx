@@ -172,7 +172,7 @@ export function ChartLineMultianual() {
       }
     })
     .catch((error) => {
-      console.error("Erro ao buscar dados periodicos", error)
+      console.error("Erro ao buscar dados gerais dos institutos", error)
     })
   }, [])
 
