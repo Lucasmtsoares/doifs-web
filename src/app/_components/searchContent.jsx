@@ -20,12 +20,19 @@ export function SearchContent() {
         
         setIsLoading(true);
 
-        const query = new URLSearchParams({
-            name,
-            institute,
-            type,
-            year,
-        })
+        const params = {}
+
+        if (name) params.name = name
+        if (institute) params.institute = institute
+        if (type) params.type = type
+        if (year) params.year = year
+        
+        if (Object.keys(params).length === 0) {
+            setIsLoading(false)
+            return;
+        }
+
+        const query = new URLSearchParams(params)
 
         axios
         .get(`/api/search?${query.toString()}`)
@@ -34,6 +41,7 @@ export function SearchContent() {
             
         })
         .catch((error) => {
+            console.error("Erro ao realizar consulta.", error)
             setPublications([]); 
         })
         .finally(() => {
@@ -44,7 +52,7 @@ export function SearchContent() {
     const publications = publicationsData.publications || []
     const count = publicationsData.count || []
     
-    
+
     if (isLoading) {
         return <p className="text-xl p-8">Buscando publicações...</p>;
     }
