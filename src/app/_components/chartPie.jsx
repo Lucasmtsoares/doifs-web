@@ -115,7 +115,7 @@ function SinglePieChart({ data, title, description, colorKey, valueKey }) {
     const totalAtos = data.reduce((sum, item) => sum + item[valueKey], 0);
 
     return (
-        <Card className="flex flex-col p-4 mb-8 bg-blue-950 shadow-2xl">
+        <Card className="flex flex-col p-4 mb-8 shadow-2xl">
             <CardHeader className="items-center pb-0">
                 <CardTitle className="text-white">{title}</CardTitle> 
                 <CardDescription className="text-gray-300">{description}</CardDescription> 

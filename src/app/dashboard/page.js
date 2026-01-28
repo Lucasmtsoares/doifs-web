@@ -15,7 +15,7 @@ import { ChartStateGroupedBar } from "../_components/chartBarr";
 //bg-violet-50
 export default function Dashboard() {
     return (
-        <section className="bg-black min-h-screen flex flex-row">
+        <section className="bg-violet-50 min-h-screen flex flex-row">
             <SidebarMenu />
 
             <div className="flex-1 flex flex-col items-center overflow-x-hidden">

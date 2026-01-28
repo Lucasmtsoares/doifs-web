@@ -151,8 +151,8 @@ export function ChartBarLabelCustom() {
   
   // Envolvemos o componente Card na classe 'dark' para forçar o tema escuro.
   return (
-    <div className="rounded-2xl dark bg-background"> {/* Adiciona a classe dark e um fundo para visualização */}
-      <Card className="bg-blue-950 shadow-2xl">
+    <div className="rounded-2xl"> {/* Adiciona a classe dark e um fundo para visualização */}
+      <Card className="shadow-2xl">
         <CardHeader>
           <CardTitle>Ranking dos top 10 diretores dos Insttutos Federais com mais atos assinados</CardTitle>
           <CardDescription>Distribuição de nomeações e exonerações no intervalo de um ano.</CardDescription>

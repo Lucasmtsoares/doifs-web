@@ -136,10 +136,10 @@ export function ChartStateGroupedBar() {
     const whiteTextStyle = { fill: 'white', fontSize: 12 };
 
     return (
-        <div className="rounded-2xl dark bg-background">
-            <Card className="flex flex-col bg-blue-950 shadow-2xl">
+        <div className="rounded-2xl">
+            <Card className="flex flex-col shadow-2xl">
                 <CardHeader className="items-start pb-0">
-                    <CardTitle className="text-white">Atos por Estado e Tipo</CardTitle>
+                    <CardTitle className="">Atos por Estado e Tipo</CardTitle>
 
                     {/* FILTRO DE ANO - Não precisa de isMounted, pois é HTML simples */}
                     <div className="flex items-center gap-2 mt-2">

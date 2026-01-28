@@ -184,8 +184,8 @@ export function ChartArea() {
 
   // Aplica a classe 'dark' para forçar o tema escuro em todo o componente - 101828
   return (
-    <div className="rounded-2xl dark bg-background">
-      <Card className="pt-0 bg-blue-950 shadow-2xl">
+    <div className="rounded-2xl">
+      <Card className="pt-0  shadow-2xl">
         <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
           <div className="grid flex-1 gap-1">
             <CardTitle>Visão geral de atos de pessoal (nomeações e exonerações)</CardTitle>

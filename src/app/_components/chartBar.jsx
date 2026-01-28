@@ -233,10 +233,10 @@ export function ChartLineMultianual() {
     { key: ano1, label: `Total em ${ano1}`, color: CHART_COLORS[0] },
     { key: ano2, label: `Total em ${ano2}`, color: CHART_COLORS[1] },
   ];
-
+//dark bg-background
   return (
-    <div className="rounded-2xl dark bg-background">
-      <Card className="py-0 bg-blue-950 shadow-2xl">
+    <div className="rounded-2xl">
+      <Card className="py-0 shadow-2xl">
         <CardHeader className="flex flex-col items-stretch border-b !p-0 sm:flex-row">
           <div className="flex flex-1 flex-col justify-center gap-1 px-6 pt-4 pb-3 sm:!py-0">
             <CardTitle>{chartTitle}</CardTitle>
