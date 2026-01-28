@@ -52,7 +52,7 @@ export function ChartBarLabelCustom() {
     <div className="rounded-2xl w-full">
       <Card className="shadow-2xl">
         <CardHeader>
-          <CardTitle>Ranking dos top 10 diretores dos Institutos Federais com mais atos assinados</CardTitle>
+          <CardTitle>Ranking dos top 10 reitores dos Institutos Federais com mais atos assinados</CardTitle>
           <CardDescription>Distribuição de nomeações e exonerações no intervalo de um ano.</CardDescription>
         </CardHeader>
         <CardContent>
