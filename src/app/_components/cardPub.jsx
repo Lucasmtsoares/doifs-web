@@ -4,7 +4,8 @@ export function CardPub({pubss}) {
             <div className="flex gap-6">
                 <img src="file.svg" alt="" className="w-[30px] h-[40px]" />
                 <div>
-                    <a href={pubss.url} className="text-lg text-blue-600">{pubss.concierge}</a>
+                    <a href={pubss.url} className="text-lg text-blue-600">{pubss.ordinance}</a>
+                    <p className="text-sm text-neutral-600">{pubss.acronym}</p>
                     <p className="text-sm text-neutral-600">{pubss.institute}</p>
                 </div>
             </div>

@@ -13,7 +13,7 @@ export function SearchContent() {
 
     useEffect(() => {
         const name = searchParams.get("name");
-        const institute = searchParams.get("institute");
+        const acronym = searchParams.get("acronym");
         const type = searchParams.get("type");
         const year = searchParams.get("year");
        
@@ -23,7 +23,7 @@ export function SearchContent() {
         const params = {}
 
         if (name) params.name = name
-        if (institute) params.institute = institute
+        if (acronym) params.acronym = acronym
         if (type) params.type = type
         if (year) params.year = year
         

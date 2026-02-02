@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 export function Form({ alwaysShowFilters = false }) {
     const [formData, setFormData] = useState({
         name: '',
-        institute: '',
+        acronym: '',
         type: '',
         year: '',
     });
@@ -83,8 +83,8 @@ export function Form({ alwaysShowFilters = false }) {
                     </select>
 
                     <select
-                        name="institute"
-                        value={formData.institute}
+                        name="acronym"
+                        value={formData.acronym}
                         onChange={handleChange}
                         className="border rounded px-3 py-2 w-full"
                     >
