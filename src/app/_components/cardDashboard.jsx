@@ -26,7 +26,7 @@ const options = [
     {
         title: 'Ato mais recente',
         icon: Newspaper,
-        institute: 'IFAL',
+        acronym: 'IFAL',
         date: '20/07/2020',
         descrition: 'O fez uma nomeação em',
         color: 'rgb(37, 99, 235)', // Blue 600
@@ -64,7 +64,7 @@ export function CardDashboard() {
     const updatedOptions = options.map(option => {
 
         let count = option.count
-        let institute = option.institute
+        let acronym = option.acronym
         let date = option.date
         let descrition = option.descrition
 
@@ -80,15 +80,15 @@ export function CardDashboard() {
             const latest = latest_pubs[0]
             console.log("Saida > ", latest_pubs[0])
             if (latest) {
-                institute = latest.institute
+                acronym = latest.acronym
                 date = format(new Date(latest.date), 'dd/MM/yyyy', { location: ptBR })
-                descrition = `O ${latest.institute} fez uma ${latest.type} em `
+                descrition = `O ${latest.acronym} fez uma ${latest.type} em `
             }
         } else if (option.title === 'Total de atos') {
             count = total_count
         }
 
-        return { ...option, count, institute, date, descrition }
+        return { ...option, count, acronym, date, descrition }
     })
 
 
@@ -107,7 +107,7 @@ export function CardDashboard() {
                                             <Icon size={28} color={options.color}/>
                                         </div>
                                     </div>
-                                    <p className="font-bold text-2xl text-cyan-900">{options.count} {options.institute}</p>
+                                    <p className="font-bold text-2xl text-cyan-900">{options.count} {options.acronym}</p>
                                     <p className="pt-4 text-sm text-gray-400">{options.descrition} {options.date}</p>
                                 </div>
                             </li>

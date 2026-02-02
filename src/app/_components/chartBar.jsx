@@ -186,7 +186,7 @@ export function ChartLineMultianual() {
   const chartData = useMemo(() => {
     // 1. Filtra os dados da API pelo Instituto selecionado
     const dataFiltrada = periodicData.filter(
-      (item) => item.institute === instituicaoSelecionada &&
+      (item) => item.acronym === instituicaoSelecionada &&
         (item.year.toString() === ano1 || item.year.toString() === ano2)
         
     );
