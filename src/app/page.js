@@ -41,8 +41,8 @@ export default function Home() {
             </span>
           </h1>
           <p className="mt-6 text-slate-500 text-lg max-w-2xl mx-auto leading-relaxed">
-            A plataforma inteligente para consulta de <strong>atos de pessoal</strong> 
-            registrados nos Institutos Federais.
+            A plataforma inteligente para consulta de <span className="font-bold">atos de pessoal </span> 
+             registrados nos Institutos Federais.
           </p>
         </div>
 
