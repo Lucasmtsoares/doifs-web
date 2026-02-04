@@ -41,7 +41,6 @@ export function Form({ alwaysShowFilters = false }) {
 
     const handleClearFilters = () => {
         setFormData(initialFormState);
-        router.push('/search');
     };
 
     const handleSubmit = (e) => {
