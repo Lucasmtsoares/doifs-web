@@ -18,6 +18,8 @@ export default function Dashboard() {
         <section className="bg-violet-50 min-h-screen flex flex-row">
             <SidebarMenu />
 
+
+            
             <div className="flex-1 flex flex-col items-center overflow-x-hidden">
                 <div className="max-w-6xl">
 
