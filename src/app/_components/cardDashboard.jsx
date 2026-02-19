@@ -10,6 +10,19 @@ export function CardDashboard({ context }) {
     const [data, setData] = useState(null);
     const [mounted, setMounted] = useState(false);
 
+    // Mapeamento para converter as chaves do contexto nas chaves do Histórico da API
+    const historicKeyMap = {
+        'nomeacoes': 'total_nomeação',
+        'exoneracoes': 'total_exoneração',
+        'designacoes': 'total_designação',
+        'dispensas': 'total_dispensa',
+        'aposentadorias': 'total_aposentadoria',
+        'demissoes': 'total_demissão',
+        'substituicoes': 'total_substituição',
+        'afastamentos': 'total_afastamento',
+        'pensoes': 'total_pensão'
+    };
+
     // Função auxiliar para normalizar strings (remove acentos e deixa em minúsculo)
     const normalize = (str) => {
         if (!str) return "";
@@ -41,7 +54,7 @@ export function CardDashboard({ context }) {
         );
     }
 
-    const { types_counts, latest_pubs } = data;
+    const { types_counts, latest_pubs, count_by_type_all_time } = data;
 
     // Lógica de filtragem aprimorada para lidar com Nomeação vs Nomeações
     const filteredPubs = (latest_pubs || []).filter((pub) => {
@@ -57,12 +70,19 @@ export function CardDashboard({ context }) {
 
     const latest = filteredPubs.length > 0 ? filteredPubs[0] : null;
 
+    // 2. Cálculo da Soma Geral (Histórica)
+    // Buscamos as chaves históricas equivalentes às chaves do contexto atual
+    const keyA_historic = historicKeyMap[context.serieA.key];
+    const keyB_historic = historicKeyMap[context.serieB.key];
+    
+    const total_geral = (count_by_type_all_time[keyA_historic] || 0) + (count_by_type_all_time[keyB_historic] || 0);
+
     const cards = [
         {
             title: context.serieA.label,
             count: types_counts[context.serieA.key] || 0,
             icon: TrendingUp,
-            description: `Total acumulado`,
+            description: `Total acumulado no último mês`,
             color: 'rgb(5, 150, 105)',
             background: 'bg-emerald-100'
         },
@@ -70,7 +90,7 @@ export function CardDashboard({ context }) {
             title: context.serieB.label,
             count: types_counts[context.serieB.key] || 0,
             icon: TrendingDown,
-            description: `Total acumulado`,
+            description: `Total acumulado no último mês`,
             color: 'rgb(225, 29, 72)',
             background: 'bg-rose-100'
         },
@@ -78,16 +98,16 @@ export function CardDashboard({ context }) {
             title: 'Ato mais recente',
             count: latest ? latest.acronym : '---',
             icon: Newspaper,
-            description: latest ? `${latest.type} em ` : 'Sem registros',
+            description: latest ? `Realizou ${latest.type} em ` : 'Sem registros',
             date: latest ? format(parseISO(latest.date), "dd/MM/yy", { locale: ptBR }) : '',
             color: 'rgb(37, 99, 235)',
             background: 'bg-blue-100'
         },
         {
-            title: 'Soma do Contexto',
-            count: (types_counts[context.serieA.key] || 0) + (types_counts[context.serieB.key] || 0),
+            title: 'Acumulativo Histórico',
+            count: (total_geral.toLocaleString('pt-BR')),
             icon: Sigma,
-            description: 'Total de atos na comparação',
+            description: 'Contagem desde 2018',
             color: 'rgb(245, 158, 11)',
             background: 'bg-amber-100'
         }
