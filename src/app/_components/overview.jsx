@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+'use client'
+
+import React, { useState, useEffect, useMemo } from 'react';
+import axios from 'axios';
 import {
   AreaChart,
   Area,
@@ -7,165 +10,171 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  PieChart,
-  Pie,
+  PieChart, 
+  Pie, 
   Cell
 } from 'recharts';
-import { TrendingUp, TrendingDown } from 'lucide-react';
+import { Info } from 'lucide-react';
 
-// --- Dados de Exemplo (Agora a taxa controla o gráfico) ---
-const cardStats = [
-  { id: 1, titulo: "Resumo Nomeações", total: 200, taxa: -36, hasChart: true },
-  { id: 2, titulo: "Resumo Exonerações", total: 150, taxa: 45, hasChart: true },
-  { id: 3, titulo: "Resumo Afastamentos", total: 80, taxa: 8, hasChart: true },
-  { id: 4, titulo: "Resumo Aposentadorias", total: 40, taxa: 25, hasChart: true },
-  { id: 5, titulo: "Resumo Pensão", total: 15, taxa: 5, hasChart: true },
-  { id: 6, titulo: "Resumo Demissão", total: 5, taxa: 2, hasChart: true },
-  { id: 7, titulo: "Resumo Dispensa", total: 110, taxa: 60, hasChart: true },
-  { id: 8, titulo: "Resumo Designação", total: 300, taxa: 85, hasChart: true },
-  { id: 9, titulo: "Resumo Substituição", total: 190, taxa: 30, hasChart: true },
-  { id: 10, titulo: "Resumo Total geral", total: 2000, hasChart: false },
-];
-
-const chartDataRaw = [
-  { total: 4000, year: 2024, month: "Jan" }, { total: 3200, year: 2024, month: "Fev" },
-  { total: 4500, year: 2024, month: "Mar" }, { total: 3800, year: 2024, month: "Abr" },
-  { total: 5000, year: 2024, month: "Mai" }, { total: 4200, year: 2024, month: "Jun" },
-  { total: 3900, year: 2024, month: "Jul" }, { total: 40, year: 2024, month: "Ago" },
-  { total: 4600, year: 2024, month: "Set" }, { total: 480, year: 2024, month: "Out" },
-  { total: 5200, year: 2024, month: "Nov" }, { total: 550, year: 2024, month: "Dez" },
-];
-
-// --- Sub-componente: Mini Pie Chart DINÂMICO ---
-const MiniPie = ({ percent }) => {
-  // Garante que o valor seja absoluto para o gráfico e não passe de 100
-  const safePercent = Math.min(Math.abs(percent), 100);
+// --- Sub-componente: Círculo de Progresso (Estilo Donut) ---
+const MiniProgress = ({ percent }) => {
   const data = [
-    { value: safePercent }, 
-    { value: 100 - safePercent }
+    { value: percent }, 
+    { value: 100 - percent }
   ];
   
-  // Se a taxa for positiva, azul. Se for negativa, usamos um tom de alerta ou mantemos o padrão.
-  const COLORS = [percent >= 0 ? '#3b82f6' : '#ef4444', '#f1f5f9'];
+  const COLORS = ['#0ea5e9', '#f1f5f9']; // Azul Sky 500 e fundo cinza claro
 
   return (
-    <PieChart width={42} height={42}>
-      <Pie 
-        data={data} 
-        innerRadius={13} 
-        outerRadius={19} 
-        dataKey="value" 
-        stroke="none"
-        startAngle={90}
-        endAngle={-270}
-      >
-        {data.map((entry, index) => (
-          <Cell key={`cell-${index}`} fill={COLORS[index]} />
-        ))}
-      </Pie>
-    </PieChart>
+    <div className="flex flex-col items-center justify-center">
+      <PieChart width={50} height={50}>
+        <Pie 
+          data={data} 
+          innerRadius={15} 
+          outerRadius={22} 
+          dataKey="value" 
+          stroke="none"
+          startAngle={90}
+          endAngle={-270}
+        >
+          {data.map((entry, index) => (
+            <Cell key={`cell-${index}`} fill={COLORS[index]} />
+          ))}
+        </Pie>
+      </PieChart>
+      <span className="text-[10px] font-bold text-slate-600 -mt-1 italic">
+        {percent.toFixed(1)}%
+      </span>
+    </div>
   );
 };
 
-// --- Sub-componente: Stat Card ---
-const StatCard = ({ item }) => {
-  const isPositive = item.taxa >= 0;
+// --- Sub-componente: Stat Card Atualizado ---
+const StatCard = ({ title, value, totalGeneral }) => {
+  // Cálculo da taxa correspondente ao total geral
+  const percentage = totalGeneral > 0 ? (value / totalGeneral) * 100 : 0;
+
   return (
-    <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-between h-[115px] hover:shadow-md transition-shadow">
-      <div className="flex justify-between items-start">
-        <div className="max-w-[65%]">
-          <p className="text-gray-400 text-[10px] font-bold uppercase tracking-wider leading-tight">
-            {item.titulo}
-          </p>
-          <h3 className="text-xl font-extrabold text-slate-800 mt-1">
-            {item.total.toLocaleString()}
-          </h3>
-        </div>
-        {/* Passamos a taxa para o gráfico ser gerado dinamicamente */}
-        {item.hasChart && <MiniPie percent={item.taxa || 0} />}
+    <div className="bg-white p-4 rounded-xl border border-slate-100 shadow-sm flex flex-row items-center justify-between h-[110px] hover:shadow-md transition-all">
+      <div className="flex-1">
+        <p className="text-slate-400 text-[10px] uppercase tracking-wider mb-1">
+          {title}
+        </p>
+        {/* Removido o font-bold/font-black para um visual mais amigável */}
+        <h3 className="text-2xl font-medium text-slate-700">
+          {value?.toLocaleString() || 0}
+        </h3>
+        <p className="text-[9px] text-slate-400 mt-1 italic">Incidência no total</p>
       </div>
       
-      {item.taxa !== undefined && (
-        <div className={`flex items-center text-[11px] font-bold ${isPositive ? 'text-emerald-500' : 'text-rose-500'}`}>
-          {isPositive ? <TrendingUp size={14} className="mr-1" /> : <TrendingDown size={14} className="mr-1" />}
-          {Math.abs(item.taxa)}%
-        </div>
-      )}
+      {/* Círculo de progresso com a taxa */}
+      <div className="ml-2">
+        <MiniProgress percent={percentage} />
+      </div>
     </div>
   );
 };
 
 export function Overview() {
+  const [apiData, setApiData] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [selectedYear, setSelectedYear] = useState(2024);
 
+  useEffect(() => {
+    axios.get("api/dashboard/totals")
+      .then((res) => {
+        setApiData(res.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Erro ao carregar dados:", err);
+        setLoading(false);
+      });
+  }, []);
+
+  const chartData = useMemo(() => {
+    if (!apiData?.monthly_totals) return [];
+    return apiData.monthly_totals.filter(item => item.year === selectedYear);
+  }, [apiData, selectedYear]);
+
+  if (loading) return <div className="p-20 text-center text-slate-500">Carregando indicadores...</div>;
+
+  const counts = apiData?.count_by_type_all_time || {};
+  const totalGeral = apiData?.total_count || 0;
+  
+  const categories = [
+    { title: "Nomeações", val: counts.total_nomeação },
+    { title: "Exonerações", val: counts.total_exoneração },
+    { title: "Afastamentos", val: counts.total_afastamento },
+    { title: "Aposentadorias", val: counts.total_aposentadoria },
+    { title: "Pensões", val: counts.total_pensão },
+    { title: "Demissões", val: counts.total_demissão },
+    { title: "Dispensas", val: counts.total_dispensa },
+    { title: "Designações", val: counts.total_designação },
+    { title: "Substituições", val: counts.total_substituição },
+  ];
+
   return (
-    <div className="w-full bg-slate-50 p-4 sm:p-8">
-      <div className="max-w-5xl mx-auto">
+    <div className="w-full bg-slate-50/50 p-4 sm:p-8">
+      <div className="max-w-7xl mx-auto">
         
-        {/* Grid de Cards */}
-        <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
-          {cardStats.map((item) => (
-            <StatCard key={item.id} item={item} />
+        {/* Grid de Cards Categorizados */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-4">
+          {categories.map((item, idx) => (
+            <StatCard 
+              key={idx} 
+              title={item.title} 
+              value={item.val} 
+              totalGeneral={totalGeral}
+            />
           ))}
+
+          {/* Card Especial para o Total Geral (sem círculo de progresso 100%) */}
+          <div className="bg-blue-600 p-4 rounded-xl shadow-lg flex flex-col justify-center h-[110px]">
+            <p className="text-blue-100 text-[10px] uppercase tracking-wider">Acumulado Geral</p>
+            <h3 className="text-3xl font-light text-white mt-1">
+              {totalGeral.toLocaleString()}
+            </h3>
+            <p className="text-blue-200 text-[10px] mt-1 italic font-medium">Atos desde 2018</p>
+          </div>
         </div>
 
-        {/* Área do Gráfico Principal */}
-        <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+        <div className="flex items-center gap-2 mb-8 px-2">
+            <Info size={14} className="text-blue-500" />
+            <p className="text-[11px] text-slate-500">
+                A porcentagem exibida em cada card representa a participação daquele ato no volume total histórico de {totalGeral.toLocaleString()} registros.
+            </p>
+        </div>
+
+        {/* Gráfico de Evolução (Mantido) */}
+        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
           <div className="flex justify-between items-center mb-8">
-            <div>
-              <h2 className="text-lg font-bold text-slate-800">Performance Over Time</h2>
-              <p className="text-gray-400 text-sm">Volume mensal de atos registrados</p>
-            </div>
-            
+            <h2 className="text-lg font-bold text-slate-800 tracking-tight">Evolução Mensal</h2>
             <select 
               value={selectedYear}
               onChange={(e) => setSelectedYear(Number(e.target.value))}
-              className="bg-slate-50 border border-gray-200 rounded-lg px-4 py-2 text-sm font-bold text-slate-600 outline-none focus:ring-2 focus:ring-blue-500 transition-all cursor-pointer shadow-sm"
+              className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-sm font-medium text-slate-600"
             >
-              <option value={2024}>2024</option>
-              <option value={2023}>2023</option>
+              {[2026, 2025, 2024, 2023, 2022, 2019, 2018].map(y => (
+                <option key={y} value={y}>{y}</option>
+              ))}
             </select>
           </div>
 
-          <div className="h-[380px] w-full">
+          <div className="h-[300px] w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={chartDataRaw} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+              <AreaChart data={chartData}>
                 <defs>
                   <linearGradient id="colorTotal" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.15}/>
-                    <stop offset="95%" stopColor="#3b82f6" stopOpacity={0.01}/>
+                    <stop offset="5%" stopColor="#2563eb" stopOpacity={0.1}/>
+                    <stop offset="95%" stopColor="#2563eb" stopOpacity={0}/>
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                <XAxis 
-                  dataKey="month" 
-                  axisLine={false} 
-                  tickLine={false} 
-                  tick={{fill: '#94a3b8', fontSize: 12, fontWeight: 500}}
-                  dy={15}
-                />
-                <YAxis 
-                  axisLine={false} 
-                  tickLine={false} 
-                  tick={{fill: '#94a3b8', fontSize: 12, fontWeight: 500}}
-                />
-                <Tooltip 
-                  contentStyle={{ 
-                    borderRadius: '12px', 
-                    border: 'none', 
-                    boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)',
-                    fontSize: '12px'
-                  }}
-                />
-                <Area 
-                  type="monotone" 
-                  dataKey="total" 
-                  stroke="#3b82f6" 
-                  strokeWidth={4}
-                  fillOpacity={1} 
-                  fill="url(#colorTotal)" 
-                  animationDuration={1200}
-                />
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
+                <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{fill: '#64748b', fontSize: 12}} />
+                <YAxis axisLine={false} tickLine={false} tick={{fill: '#64748b', fontSize: 12}} />
+                <Tooltip />
+                <Area type="monotone" dataKey="total" stroke="#2563eb" strokeWidth={3} fill="url(#colorTotal)" />
               </AreaChart>
             </ResponsiveContainer>
           </div>

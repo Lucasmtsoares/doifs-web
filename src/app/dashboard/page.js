@@ -60,7 +60,9 @@ export default function Dashboard() {
                         <div className="flex flex-col gap-8">
                             {/* Passamos o 'context' para todos os componentes. 
                                 Cada gráfico usará context.serieA e context.serieB para o seu fetch individual. */}
-                            <CardDashboard context={currentContext} />
+                            <div>
+                                <CardDashboard context={currentContext} />
+                            </div>
                             
                             <div className="pt-4">
                                 <ChartArea context={currentContext} />
