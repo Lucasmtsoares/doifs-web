@@ -1,4 +1,4 @@
-import axios from "axios"; //o
+import axios from "axios";
 import { NextResponse } from "next/server";
 
 export async function GET() {
@@ -9,16 +9,17 @@ export async function GET() {
     }
 
     try {
-        const response = await axios.get(`${FASTAPI_URL}/periodic-types`);
+        const response = await axios.get(`${FASTAPI_URL}/filters`);
         console.log("SUCESSOOOO")
         return NextResponse.json(response.data)
+
     } catch (error) {
-        console.error("Erro ao connsultar API", error.message);
+        console.error("Erro ao consultar a API", error.message)
 
         return NextResponse.json(
             {error: "Falha ao conectar ou processar a API", details: error.message},
             {status: 502}
-        );
+        )
     }
-
 }
+
