@@ -1,10 +1,35 @@
 'use client'
 
+import axios from "axios";
 import { useState, useEffect } from "react";
 import { FiSearch, FiFilter, FiXCircle, FiChevronUp } from "react-icons/fi";
 import { useRouter, useSearchParams } from "next/navigation";
 
 export function Form({ alwaysShowFilters = false }) {
+
+    //retorno da rota de filters
+    const [types, setTypes] = useState([])
+    const [institutes, setInstitutes] = useState([])
+    const [years, setYears] = useState([])
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get('/api/filters')
+                const data = response.data
+
+                setTypes(data.types || [])
+                setInstitutes(data.institutes || [])
+                setYears(data.years || [])
+            } catch (error){
+                console.error("Erro ao buscar dados para filtros", error.message)
+            }
+        }
+        fetchData()
+    }, [])
+
+    console.log("TIPOS: ", types)
+
     const initialFormState = {
         name: '',
         acronym: '',
@@ -118,15 +143,9 @@ export function Form({ alwaysShowFilters = false }) {
                                 className="bg-white border border-slate-200 rounded-lg px-3 py-3 text-sm text-slate-600 outline-none focus:border-emerald-500"
                             >
                                 <option value="">Todos os Atos</option>
-                                <option value="Nomeação">Nomeação</option>
-                                <option value="Exoneração">Exoneração</option>
-                                <option value="Afastamento">Afastamento</option>
-                                <option value="Aposentadoria">Aposentaria</option>
-                                <option value="Pensão">Pensão</option>
-                                <option value="Demissão">Demissão</option>
-                                <option value="Dispensa">Dispensa</option>
-                                <option value="Designação">Designação</option>
-                                <option value="Substituição">Substituição</option>
+                                {types.map((t) => (
+                                    <option key={t} value={t}>{t}</option>
+                                ))}
 
                             </select>
                         </div>
@@ -140,12 +159,8 @@ export function Form({ alwaysShowFilters = false }) {
                                 className="bg-white border border-slate-200 rounded-lg px-3 py-3 text-sm text-slate-600 outline-none focus:border-emerald-500"
                             >
                                 <option value="">Todos Institutos</option>
-                                {['IFAC', 'IFAL', 'IFAP', 'IFAM', 'IFBA', 'IF Baiano', 'IFCE', 'IFB',
-                                      'IFG', 'IF Goiano', 'IFES', 'IFMA', 'IFMG', 'IFNMG', 'IF Sudeste MG',
-                                       'IFSULDEMINAS', 'IFTM', 'IFMT', 'IFMS', 'IFPA', 'IFPB', 'IFPE',
-                                       'IF Sertão PE', 'IFPI', 'IFPR', 'IFRJ', 'IFF', 'IFRN', 'IFRS',
-                                       'IFFarroupilha', 'IFSUL', 'IFRO', 'IFRR', 'IFSC', 'IFC', 'IFSP', 'IFS', 'IFTO'].map((inst) => (
-                                    <option key={inst} value={inst}>{inst}</option>
+                                {institutes.map((i) => (
+                                    <option key={i} value={i}>{i}</option>
                                 ))}
                             </select>
                         </div>
@@ -159,8 +174,8 @@ export function Form({ alwaysShowFilters = false }) {
                                 className="bg-white border border-slate-200 rounded-lg px-3 py-3 text-sm text-slate-600 outline-none focus:border-emerald-500"
                             >
                                 <option value="">Qualquer ano</option>
-                                {['2024', '2025', '2026'].map((year) => (
-                                    <option key={year} value={year}>{year}</option>
+                                {years.map((y) => (
+                                    <option key={y} value={y}>{y}</option>
                                 ))}
                             </select>
                         </div>
@@ -187,6 +202,9 @@ export function Form({ alwaysShowFilters = false }) {
                             </button>
                         </div>
                     </div>
+                </div>
+                <div>
+                    
                 </div>
             </form>
         </div>
