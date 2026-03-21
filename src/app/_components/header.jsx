@@ -3,9 +3,9 @@ import { LayoutGrid } from 'lucide-react';
 
 const options = [
     { label: 'Home', id: '/' },
-    { label: 'Serviços', id: '/servicos' },
-    { label: 'Contato', id: '/contato' },
-    { label: 'Sobre', id: '/sobre' },
+    { label: 'Serviços', id: '/services' },
+    { label: 'Contato', id: '/contact' },
+    { label: 'Sobre', id: '/about' },
 ];
 
 export function Header() {
