@@ -1,9 +1,9 @@
 'use client'
 
 import { useEffect, useState, useMemo } from "react"
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts"
 import axios from "axios"
-import { TrendingUp } from "lucide-react"
+import { TrendingUp, Calendar, ArrowUpRight } from "lucide-react"
 
 import {
   Card,
@@ -52,7 +52,6 @@ export function ChartArea({ context }) {
     fetchData()
   }, [])
 
-  // 1. Filtro de tempo
   const filteredData = useMemo(() => {
     if (!rawData.length || !context) return []
     const now = new Date()
@@ -62,7 +61,6 @@ export function ChartArea({ context }) {
     return rawData.filter(item => new Date(item.date) >= cutoffDate)
   }, [rawData, timeRange, context])
 
-  // 2. Mapeamento para o Recharts
   const chartData = useMemo(() => {
     return filteredData.map(item => ({
       date: item.date,
@@ -71,7 +69,6 @@ export function ChartArea({ context }) {
     }))
   }, [filteredData, context])
 
-  // 3. NOVA REGRA DE SOMA: Apenas os tipos do contexto atual
   const totalSpecificSum = useMemo(() => {
     return filteredData.reduce((acc, item) => {
       const valA = item[context.serieA.key] || 0
@@ -80,60 +77,67 @@ export function ChartArea({ context }) {
     }, 0)
   }, [filteredData, context])
 
+  // --- CONFIGURAÇÃO DE CORES NORMALIZADA (Emerald 500 e 200) ---
   const chartConfig = useMemo(() => ({
     [context?.serieA.key]: {
       label: context?.serieA.label,
-      color: "hsl(210 40% 50%)",
+      color: "#10b981", // Emerald 500
     },
     [context?.serieB.key]: {
       label: context?.serieB.label,
-      color: "hsl(210 40% 80%)",
+      color: "#a7f3d0", // Emerald 200 para contraste suave
     },
   }), [context])
 
   if (!isClient) {
-    return <div className="w-full h-[450px] bg-white rounded-2xl border border-gray-100 animate-pulse" />
+    return <div className="w-full h-[450px] bg-white rounded-3xl border border-slate-100 animate-pulse" />
   }
 
   return (
-    <Card className="rounded-2xl shadow-sm border-gray-100 bg-white">
-      <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
+    <Card className="rounded-3xl shadow-sm border-slate-100 bg-white overflow-hidden transition-all hover:shadow-md">
+      <CardHeader className="flex items-center gap-4 space-y-0 border-b border-slate-50 py-6 sm:flex-row bg-slate-50/30">
         <div className="grid flex-1 gap-1 text-center sm:text-left">
-          <CardTitle className="text-xl font-bold text-slate-800">
+          <CardTitle className="text-xl font-black tracking-tight text-slate-800">
             {context?.label}
           </CardTitle>
-          <CardDescription>
-            Análise de {context?.serieA.label} vs {context?.serieB.label}
+          <CardDescription className="text-slate-500 font-medium">
+            Análise comparativa: {context?.serieA.label} vs {context?.serieB.label}
           </CardDescription>
         </div>
-        <Select value={timeRange} onValueChange={setTimeRange}>
-          <SelectTrigger className="w-[160px] rounded-lg sm:ml-auto">
-            <SelectValue placeholder="Últimos 3 meses" />
-          </SelectTrigger>
-          <SelectContent className="rounded-xl">
-            <SelectItem value="90d">Últimos 3 meses</SelectItem>
-            <SelectItem value="30d">Último mês</SelectItem>
-            <SelectItem value="7d">Última semana</SelectItem>
-          </SelectContent>
-        </Select>
+        
+        {/* Select Customizado para o Tema */}
+        <div className="flex items-center gap-2">
+            <Calendar size={16} className="text-slate-400" />
+            <Select value={timeRange} onValueChange={setTimeRange}>
+            <SelectTrigger className="w-[180px] rounded-xl border-slate-200 bg-white font-semibold text-slate-600 focus:ring-emerald-500/10">
+                <SelectValue placeholder="Últimos 3 meses" />
+            </SelectTrigger>
+            <SelectContent className="rounded-xl border-slate-100 shadow-xl">
+                <SelectItem value="90d" className="rounded-lg">Últimos 3 meses</SelectItem>
+                <SelectItem value="30d" className="rounded-lg">Último mês</SelectItem>
+                <SelectItem value="7d" className="rounded-lg">Última semana</SelectItem>
+            </SelectContent>
+            </Select>
+        </div>
       </CardHeader>
       
-      <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
+      <CardContent className="px-4 pt-8 sm:px-8 sm:pt-10">
         {loading ? (
-           <div className="h-[350px] w-full flex items-center justify-center bg-slate-50 rounded-lg animate-pulse text-slate-400 italic text-sm">
-              Sincronizando dados...
+           <div className="h-[350px] w-full flex flex-col items-center justify-center bg-slate-50/50 rounded-2xl animate-pulse text-slate-400 gap-3">
+              <div className="w-8 h-8 border-4 border-emerald-200 border-t-emerald-500 rounded-full animate-spin" />
+              <span className="text-sm font-medium italic">Sincronizando dados...</span>
            </div>
         ) : (
           <ChartContainer config={chartConfig} className="aspect-auto h-[350px] w-full">
-            <AreaChart data={chartData}>
+            <AreaChart data={chartData} margin={{ left: -20 }}>
               <defs>
                 <linearGradient id="fillA" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor={chartConfig[context.serieA.key].color} stopOpacity={0.8} />
-                  <stop offset="95%" stopColor={chartConfig[context.serieA.key].color} stopOpacity={0.1} />
+                  <stop offset="5%" stopColor={chartConfig[context.serieA.key].color} stopOpacity={0.15} />
+                  <stop offset="95%" stopColor={chartConfig[context.serieA.key].color} stopOpacity={0.01} />
                 </linearGradient>
                 <linearGradient id="fillB" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor={chartConfig[context.serieB.key].color} stopOpacity={0.8} />
-                  <stop offset="95%" stopColor={chartConfig[context.serieB.key].color} stopOpacity={0.1} />
+                  <stop offset="5%" stopColor={chartConfig[context.serieB.key].color} stopOpacity={0.3} />
+                  <stop offset="95%" stopColor={chartConfig[context.serieB.key].color} stopOpacity={0.01} />
                 </linearGradient>
               </defs>
               <CartesianGrid vertical={false} strokeDasharray="3 3" stroke="#f1f5f9" />
@@ -141,44 +145,62 @@ export function ChartArea({ context }) {
                 dataKey="date"
                 tickLine={false}
                 axisLine={false}
-                tickMargin={8}
+                tickMargin={12}
                 minTickGap={32}
+                tick={{ fill: '#64748b', fontSize: 12, fontWeight: 500 }}
                 tickFormatter={(value) => new Date(value).toLocaleDateString("pt-BR", { month: "short", day: "numeric" })}
               />
+              <YAxis 
+                tickLine={false} 
+                axisLine={false} 
+                tick={{ fill: '#64748b', fontSize: 12 }} 
+              />
               <ChartTooltip
-                cursor={false}
-                content={<ChartTooltipContent labelFormatter={(v) => new Date(v).toLocaleDateString("pt-BR", { day: 'numeric', month: 'long', year: 'numeric' })} indicator="dot" />}
+                cursor={{ stroke: '#e2e8f0', strokeWidth: 1 }}
+                content={
+                    <ChartTooltipContent 
+                        className="rounded-xl border-slate-100 shadow-lg"
+                        labelFormatter={(v) => new Date(v).toLocaleDateString("pt-BR", { day: 'numeric', month: 'long', year: 'numeric' })} 
+                        indicator="dot" 
+                    />
+                }
               />
               <Area
                 dataKey={context.serieB.key}
-                type="natural"
+                type="monotone" // Alterado para monotone para um visual mais limpo que combina com o Overview
                 fill="url(#fillB)"
                 stroke={chartConfig[context.serieB.key].color}
+                strokeWidth={2}
                 stackId="a"
               />
               <Area
                 dataKey={context.serieA.key}
-                type="natural"
+                type="monotone"
                 fill="url(#fillA)"
                 stroke={chartConfig[context.serieA.key].color}
+                strokeWidth={3}
                 stackId="a"
               />
-              <ChartLegend content={<ChartLegendContent />} />
+              <ChartLegend content={<ChartLegendContent className="pt-6" />} />
             </AreaChart>
           </ChartContainer>
         )}
       </CardContent>
 
-      <CardFooter className="border-t pt-4">
-        <div className="flex w-full items-start gap-2 text-sm">
-          <div className="grid gap-2">
-            <div className="flex items-center gap-2 font-medium leading-none text-slate-700">
-              Total de {totalSpecificSum.toLocaleString('pt-BR')} registros no período <TrendingUp className="h-4 w-4 text-emerald-500" />
+      <CardFooter className="border-t border-slate-50 bg-slate-50/20 py-6 px-8">
+        <div className="flex w-full items-center justify-between gap-2">
+          <div className="grid gap-1">
+            <div className="flex items-center gap-2 text-base font-bold text-slate-800 leading-none">
+              {totalSpecificSum.toLocaleString('pt-BR')} registros <ArrowUpRight className="h-4 w-4 text-emerald-500" />
             </div>
-            <div className="flex items-center gap-2 leading-none text-muted-foreground">
-              {/* Texto explicativo atualizado */}
-              Soma de {context?.serieA.label} e {context?.serieB.label} no intervalo selecionado
+            <div className="text-[12px] font-medium text-slate-400">
+              Volume total de {context?.serieA.label} e {context?.serieB.label} no período
             </div>
+          </div>
+          
+          <div className="flex items-center gap-1.5 bg-emerald-50 px-3 py-1.5 rounded-lg border border-emerald-100">
+             <TrendingUp className="h-4 w-4 text-emerald-600" />
+             <span className="text-[11px] font-bold text-emerald-700 uppercase tracking-tight">Análise Ativa</span>
           </div>
         </div>
       </CardFooter>
