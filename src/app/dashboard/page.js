@@ -8,7 +8,7 @@ import { ChartArea } from "../_components/chartArea";
 import { ChartLineMultianual } from "../_components/chartBar";
 import { ChartBarLabelCustom } from "../_components/chartBarHorizontal";
 import { ChartPieRegional } from "../_components/chartPie";
-import { ChartBarState } from "../_components/chartBarr";
+import { ChartBarState } from "../_components/chartBarr"; //ChartBarState
 
 // Configuração dos contextos conforme solicitado
 const DASHBOARD_CONTEXTS = {
