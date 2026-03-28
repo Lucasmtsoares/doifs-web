@@ -1,7 +1,7 @@
 'use client'
 
 import axios from "axios";
-import { TrendingUp, TrendingDown, Sigma, Newspaper, ArrowUpRight } from "lucide-react";
+import { TrendingUp, Info, TrendingDown, Sigma, Newspaper, ArrowUpRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { format, parseISO } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -58,8 +58,8 @@ export function CardDashboard({ context }) {
         const typeNorm = normalize(pub.type);
         const labelANorm = normalize(context.serieA.label);
         const labelBNorm = normalize(context.serieB.label);
-        return labelANorm.startsWith(typeNorm.substring(0, 5)) || 
-               labelBNorm.startsWith(typeNorm.substring(0, 5));
+        return labelANorm.startsWith(typeNorm.substring(0, 5)) ||
+            labelBNorm.startsWith(typeNorm.substring(0, 5));
     });
 
     const latest = filteredPubs.length > 0 ? filteredPubs[0] : null;
@@ -72,7 +72,7 @@ export function CardDashboard({ context }) {
             title: context.serieA.label,
             count: types_counts[context.serieA.key] || 0,
             icon: TrendingUp,
-            description: `Acumulado no mês`,
+            description: `Acumulado no último mês`,
             color: 'text-emerald-600',
             bgIcon: 'bg-emerald-50',
             borderIcon: 'border-emerald-100'
@@ -81,7 +81,7 @@ export function CardDashboard({ context }) {
             title: context.serieB.label,
             count: types_counts[context.serieB.key] || 0,
             icon: TrendingDown,
-            description: `Acumulado no mês`,
+            description: `Acumulado no último mês`,
             color: 'text-rose-600',
             bgIcon: 'bg-rose-50',
             borderIcon: 'border-rose-100'
@@ -90,7 +90,7 @@ export function CardDashboard({ context }) {
             title: 'Ato mais recente',
             count: latest ? latest.acronym : '---',
             icon: Newspaper,
-            description: latest ? `Realizou ${latest.type}` : 'Sem registros',
+            description: latest ? `Última ${latest.type} em:` : 'Sem registros',
             date: latest ? format(parseISO(latest.date), "dd/MM/yy", { locale: ptBR }) : '',
             color: 'text-blue-600',
             bgIcon: 'bg-blue-50',
@@ -108,7 +108,19 @@ export function CardDashboard({ context }) {
     ];
 
     return (
-        <div className="mt-16 w-full">
+        <div className="w-full">
+            {/* Cabeçalho Normalizado */}
+            <div className="flex items-center gap-3 mb-10 border-b border-slate-100 pb-5">
+                <TrendingUp size={24} className="text-emerald-600" />
+                <h1 className="text-2xl font-black tracking-tighter text-slate-900">
+                    Visão comparativa
+                </h1>
+                <span className="bg-emerald-50 text-emerald-700 text-[11px] font-bold px-3 py-1 rounded-full border border-emerald-100 ml-auto flex items-center gap-1.5">
+                    <Info size={14} />
+                    Volume histórico: {total_geral.toLocaleString()} registros
+                </span>
+            </div>
+
             <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {cards.map((card, index) => {
                     const Icon = card.icon;
@@ -124,7 +136,7 @@ export function CardDashboard({ context }) {
                                         <Icon size={16} strokeWidth={2.5} />
                                     </div>
                                 </div>
-                                
+
                                 {/* Conteúdo do Card */}
                                 <div className="p-6">
                                     <div className="flex items-baseline gap-2">
@@ -133,7 +145,7 @@ export function CardDashboard({ context }) {
                                         </h4>
                                         <ArrowUpRight className="h-4 w-4 text-emerald-500/50" />
                                     </div>
-                                    
+
                                     <div className="mt-4 flex flex-col gap-1">
                                         <p className="text-[12px] font-medium text-slate-400 leading-tight">
                                             {card.description}
