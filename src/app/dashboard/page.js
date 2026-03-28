@@ -72,8 +72,8 @@ export default function Dashboard() {
                     </div>
 
                     {/* DEMAIS VISUALIZAÇÕES */}
-                    <div className={activeView !== "Visão geral" ? "block" : "hidden"}>
-                        <div className="flex flex-col gap-8">
+                    <div className={activeView !== "Visão geral" ? "block sm:p-8" : "hidden"}>
+                        <div className="flex flex-col gap-8 max-w-7xl mx-auto">
                             <CardDashboard context={currentContext} />
                             <ChartArea context={currentContext} />
                             <ChartLineMultianual context={currentContext} />
