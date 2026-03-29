@@ -6,7 +6,7 @@ import Typewriter from 'typewriter-effect';
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-slate-50 overflow-x-hidden relative">
       <Header />
       
       <main className="flex flex-col items-center pt-24 pb-10 overflow-x-hidden">
