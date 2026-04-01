@@ -8,9 +8,8 @@ import { ChartArea } from "../_components/chartArea";
 import { ChartLineMultianual } from "../_components/chartBar";
 import { ChartBarLabelCustom } from "../_components/chartBarHorizontal";
 import { ChartPieRegional } from "../_components/chartPie";
-import { ChartBarState } from "../_components/chartBarr"; //ChartBarState
+import { ChartBarState } from "../_components/chartBarr";
 
-// Configuração dos contextos conforme solicitado
 const DASHBOARD_CONTEXTS = {
   ROTATIVIDADE: {
     label: "Fluxo de Rotatividade",
@@ -30,56 +29,72 @@ const DASHBOARD_CONTEXTS = {
   TEMPORARIOS: {
     label: "Substituições Temporárias",
     serieA: { label: "Substituições", key: "substituicoes" },
-    serieB: { label: "Afastamentos", key: "afastamentos" }
+    serieB: { label: "Interrupções", key: "interrupcoes" }
   },
   SEGURIDADE: {
     label: "Amparo e Seguridade",
-    serieA: { label: "Pensões", key: "pensoes"},
-    serieB: { label: "Aposentadorias", key: "aposentadorias" }
+    serieA: { label: "Pensões", key: "pensoes" },
+    serieB: { label: "Auxílios", key: "auxilios" }
   }
 };
 
 export default function Dashboard() {
     const [activeView, setActiveView] = useState("Visão geral");
 
-    const getContext = () => {
-        if (activeView === "Fluxo de Rotatividade") return DASHBOARD_CONTEXTS.ROTATIVIDADE;
-        if (activeView === "Gestão de Chefias") return DASHBOARD_CONTEXTS.CHEFIAS;
-        if (activeView === "Ciclo de Carreira") return DASHBOARD_CONTEXTS.CARREIRA;
-        if (activeView === "Substituições Temporárias") return DASHBOARD_CONTEXTS.TEMPORARIOS;
-        if (activeView === "Amparo e Seguridade") return DASHBOARD_CONTEXTS.SEGURIDADE;
-        return DASHBOARD_CONTEXTS.ROTATIVIDADE;
+    const getContext = (label) => {
+        return Object.values(DASHBOARD_CONTEXTS).find(c => c.label === label) || DASHBOARD_CONTEXTS.ROTATIVIDADE;
     };
 
-    const currentContext = getContext();
+    const currentContext = getContext(activeView);
 
     return (
-        <section className="flex min-h-screen bg-slate-50/50">
+        // AJUSTE: flex-col no mobile para o Header fixo e conteúdo rolarem corretamente
+        <section className="flex flex-col lg:flex-row min-h-screen bg-slate-50 overflow-hidden">
+            
             <SidebarMenu activeView={activeView} onSelectView={setActiveView} />
 
-            {/* Container Principal com Scroll */}
-            <div className="flex-1 h-screen overflow-y-auto">
-                {/* A largura é controlada aqui: 
-                   - max-w-[1400px]: Garante que em telas ultra-wide os gráficos não fiquem esticados demais.
-                   - mx-auto: Centraliza o bloco.
-                   - w-full: Garante que ocupe tudo até o limite do max-w.
-                */}
-                <div className="max-w-[1400px] mx-auto w-full p-8 pt-10">
+            {/* Painel Principal com Scroll */}
+            {/* AJUSTE: pt-16 no mobile para dar espaço ao Header fixo que criamos na Sidebar */}
+            <div className="flex-1 h-screen overflow-y-auto pt-16 lg:pt-0">
+                
+                {/* AJUSTE: p-4 no mobile, p-8/pt-10 no desktop */}
+                <div className="max-w-[1400px] mx-auto w-full p-4 md:p-8 lg:pt-10">
                     
+                    {/* Título da Visão Atual (Apenas Mobile para contexto) */}
+                    <div className="lg:hidden mb-6">
+                        <h1 className="text-2xl font-black text-slate-800 tracking-tight">
+                            {activeView}
+                        </h1>
+                        <p className="text-slate-500 text-sm">Análise de dados institucionais</p>
+                    </div>
+
                     {/* VISÃO GERAL */}
-                    <div className={activeView === "Visão geral" ? "block" : "hidden"}>
+                    <div className={activeView === "Visão geral" ? "block animate-in fade-in slide-in-from-bottom-4 duration-500" : "hidden"}>
                         <Overview />
                     </div>
 
-                    {/* DEMAIS VISUALIZAÇÕES */}
-                    <div className={activeView !== "Visão geral" ? "block sm:p-8" : "hidden"}>
-                        <div className="flex flex-col gap-8 max-w-7xl mx-auto">
+                    {/* DEMAIS VISUALIZAÇÕES (Gráficos) */}
+                    <div className={activeView !== "Visão geral" ? "block" : "hidden"}>
+                        {/* AJUSTE: Gap menor no mobile (gap-4) e maior no desktop (gap-8) */}
+                        <div className="flex flex-col gap-4 md:gap-8 max-w-7xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500">
+                            
+                            {/* Os cards de KPI agora precisam ser responsivos internamente */}
                             <CardDashboard context={currentContext} />
-                            <ChartArea context={currentContext} />
-                            <ChartLineMultianual context={currentContext} />
-                            <ChartBarLabelCustom context={currentContext} />
-                            <ChartPieRegional context={currentContext} />
-                            <ChartBarState context={currentContext} />
+                            
+                            {/* Grid de Gráficos: 1 coluna mobile, 2 colunas desktop onde couber */}
+                            <div className="grid grid-cols-1 gap-4 md:gap-8">
+                                <ChartArea context={currentContext} />
+                                
+                                <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 md:gap-8">
+                                    <ChartLineMultianual context={currentContext} />
+                                    <ChartBarLabelCustom context={currentContext} />
+                                </div>
+
+                                <div className="grid grid-cols-1 lg:grid-cols-[1fr,1.5fr] gap-4 md:gap-8">
+                                    <ChartPieRegional context={currentContext} />
+                                    <ChartBarState context={currentContext} />
+                                </div>
+                            </div>
                         </div>
                     </div>
 
