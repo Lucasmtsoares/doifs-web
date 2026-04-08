@@ -1,99 +1,124 @@
-Grafico charrtArea: -----------
 
-// Dados mantidos, mas as chaves 'desktop' e 'mobile' agora representam Nomeações e Exonerações oii
-/*
-const chartData = [
-  { date: "2024-04-01", nomeacoes: 222, exoneracoes: 150 },
-  { date: "2024-04-02", nomeacoes: 97, exoneracoes: 180 },
-  { date: "2024-04-03", nomeacoes: 167, exoneracoes: 120 },
-  { date: "2024-04-04", nomeacoes: 242, exoneracoes: 260 },
-  { date: "2024-04-05", nomeacoes: 373, exoneracoes: 290 },
-  { date: "2024-04-06", nomeacoes: 301, exoneracoes: 340 },
-  { date: "2024-04-07", nomeacoes: 245, exoneracoes: 180 },
-  { date: "2024-04-08", nomeacoes: 409, exoneracoes: 320 },
-  { date: "2024-04-09", nomeacoes: 59, exoneracoes: 110 },
-  { date: "2024-04-10", nomeacoes: 261, exoneracoes: 190 },
-  { date: "2024-04-11", nomeacoes: 327, exoneracoes: 350 },
-  { date: "2024-04-12", nomeacoes: 292, exoneracoes: 210 },
-  { date: "2024-04-13", nomeacoes: 342, exoneracoes: 380 },
-  { date: "2024-04-14", nomeacoes: 137, exoneracoes: 220 },
-  { date: "2024-04-15", nomeacoes: 120, exoneracoes: 170 },
-  { date: "2024-04-16", nomeacoes: 138, exoneracoes: 190 },
-  { date: "2024-04-17", nomeacoes: 446, exoneracoes: 360 },
-  { date: "2024-04-18", nomeacoes: 364, exoneracoes: 410 },
-  { date: "2024-04-19", nomeacoes: 243, exoneracoes: 180 },
-  { date: "2024-04-20", nomeacoes: 89, exoneracoes: 150 },
-  { date: "2024-04-21", nomeacoes: 137, exoneracoes: 200 },
-  { date: "2024-04-22", nomeacoes: 224, exoneracoes: 170 },
-  { date: "2024-04-23", nomeacoes: 138, exoneracoes: 230 },
-  { date: "2024-04-24", nomeacoes: 387, exoneracoes: 290 },
-  { date: "2024-04-25", nomeacoes: 215, exoneracoes: 250 },
-  { date: "2024-04-26", nomeacoes: 75, exoneracoes: 130 },
-  { date: "2024-04-27", nomeacoes: 383, exoneracoes: 420 },
-  { date: "2024-04-28", nomeacoes: 122, exoneracoes: 180 },
-  { date: "2024-04-29", nomeacoes: 315, exoneracoes: 240 },
-  { date: "2024-04-30", nomeacoes: 454, exoneracoes: 380 },
-  { date: "2024-05-01", nomeacoes: 165, exoneracoes: 220 },
-  { date: "2024-05-02", nomeacoes: 293, exoneracoes: 310 },
-  { date: "2024-05-03", nomeacoes: 247, exoneracoes: 190 },
-  { date: "2024-05-04", nomeacoes: 385, exoneracoes: 420 },
-  { date: "2024-05-05", nomeacoes: 481, exoneracoes: 390 },
-  { date: "2024-05-06", nomeacoes: 498, exoneracoes: 520 },
-  { date: "2024-05-07", nomeacoes: 388, exoneracoes: 300 },
-  { date: "2024-05-08", nomeacoes: 149, exoneracoes: 210 },
-  { date: "2024-05-09", nomeacoes: 227, exoneracoes: 180 },
-  { date: "2024-05-10", nomeacoes: 293, exoneracoes: 330 },
-  { date: "2024-05-11", nomeacoes: 335, exoneracoes: 270 },
-  { date: "2024-05-12", nomeacoes: 197, exoneracoes: 240 },
-  { date: "2024-05-13", nomeacoes: 197, exoneracoes: 160 },
-  { date: "2024-05-14", nomeacoes: 448, exoneracoes: 490 },
-  { date: "2024-05-15", nomeacoes: 473, exoneracoes: 380 },
-  { date: "2024-05-16", nomeacoes: 338, exoneracoes: 400 },
-  { date: "2024-05-17", nomeacoes: 499, exoneracoes: 420 },
-  { date: "2024-05-18", nomeacoes: 315, exoneracoes: 350 },
-  { date: "2024-05-19", nomeacoes: 235, exoneracoes: 180 },
-  { date: "2024-05-20", nomeacoes: 177, exoneracoes: 230 },
-  { date: "2024-05-21", nomeacoes: 82, exoneracoes: 140 },
-  { date: "2024-05-22", nomeacoes: 81, exoneracoes: 120 },
-  { date: "2024-05-23", nomeacoes: 252, exoneracoes: 290 },
-  { date: "2024-05-24", nomeacoes: 294, exoneracoes: 220 },
-  { date: "2024-05-25", nomeacoes: 201, exoneracoes: 250 },
-  { date: "2024-05-26", nomeacoes: 213, exoneracoes: 170 },
-  { date: "2024-05-27", nomeacoes: 420, exoneracoes: 460 },
-  { date: "2024-05-28", nomeacoes: 233, exoneracoes: 190 },
-  { date: "2024-05-29", nomeacoes: 78, exoneracoes: 130 },
-  { date: "2024-05-30", nomeacoes: 340, exoneracoes: 280 },
-  { date: "2024-05-31", nomeacoes: 178, exoneracoes: 230 },
-  { date: "2024-06-01", nomeacoes: 178, exoneracoes: 200 },
-  { date: "2024-06-02", nomeacoes: 470, exoneracoes: 410 },
-  { date: "2024-06-03", nomeacoes: 103, exoneracoes: 160 },
-  { date: "2024-06-04", nomeacoes: 439, exoneracoes: 380 },
-  { date: "2024-06-05", nomeacoes: 88, exoneracoes: 140 },
-  { date: "2024-06-06", nomeacoes: 294, exoneracoes: 250 },
-  { date: "2024-06-07", nomeacoes: 323, exoneracoes: 370 },
-  { date: "2024-06-08", nomeacoes: 385, exoneracoes: 320 },
-  { date: "2024-06-09", nomeacoes: 438, exoneracoes: 480 },
-  { date: "2024-06-10", nomeacoes: 155, exoneracoes: 200 },
-  { date: "2024-06-11", nomeacoes: 92, exoneracoes: 150 },
-  { date: "2024-06-12", nomeacoes: 492, exoneracoes: 420 },
-  { date: "2024-06-13", nomeacoes: 81, exoneracoes: 130 },
-  { date: "2024-06-14", nomeacoes: 426, exoneracoes: 380 },
-  { date: "2024-06-15", nomeacoes: 307, exoneracoes: 350 },
-  { date: "2024-06-16", nomeacoes: 371, exoneracoes: 310 },
-  { date: "2024-06-17", nomeacoes: 475, exoneracoes: 520 },
-  { date: "2024-06-18", nomeacoes: 107, exoneracoes: 170 },
-  { date: "2024-06-19", nomeacoes: 341, exoneracoes: 290 },
-  { date: "2024-06-20", nomeacoes: 408, exoneracoes: 450 },
-  { date: "2024-06-21", nomeacoes: 169, exoneracoes: 210 },
-  { date: "2024-06-22", nomeacoes: 317, exoneracoes: 270 },
-  { date: "2024-06-23", nomeacoes: 480, exoneracoes: 530 },
-  { date: "2024-06-24", nomeacoes: 132, exoneracoes: 180 },
-  { date: "2024-06-25", nomeacoes: 141, exoneracoes: 190 },
-  { date: "2024-06-26", nomeacoes: 434, exoneracoes: 380 },
-  { date: "2024-06-27", nomeacoes: 448, exoneracoes: 490 },
-  { date: "2024-06-28", nomeacoes: 149, exoneracoes: 200 },
-  { date: "2024-06-29", nomeacoes: 103, exoneracoes: 160 },
-  { date: "2024-06-30", nomeacoes: 446, exoneracoes: 400 },
-]
 
-*/
+'use client'
+
+import { useState } from 'react';
+import Link from 'next/link';
+import { 
+  Home,
+  LayoutDashboard, 
+  Repeat, 
+  Users, 
+  TrendingUp, 
+  UserCog, 
+  ShieldCheck,
+  Menu,
+  X
+} from 'lucide-react';
+
+const options = [
+    { label: "Home", icon: Home, href: "/" },
+    { label: "Visão geral", icon: LayoutDashboard },
+    { label: "Fluxo de Rotatividade", icon: Repeat },
+    { label: "Gestão de Chefias", icon: Users },
+    { label: "Ciclo de Carreira", icon: TrendingUp },
+    { label: "Substituições Temporárias", icon: UserCog },
+    { label: "Amparo e Seguridade", icon: ShieldCheck },
+];
+  
+export function SidebarMenu({ activeView, onSelectView }) {
+    const [isOpen, setIsOpen] = useState(false);
+
+    const toggleMenu = () => setIsOpen(!isOpen);
+
+    const handleSelect = (label) => {
+        onSelectView(label);
+        setIsOpen(false);
+    };
+
+    return (
+        <>
+            
+            <header className="lg:hidden fixed top-0 left-0 w-full bg-amber-300 backdrop-blur-sm border-b border-slate-100 z-[100] px-4 py-3 flex items-center justify-between shadow-sm">
+                <Link href="/" className="transition-transform active:scale-95">
+                    <img src="/logo-doifs-v1.png" alt="Logo" className="h-7 w-auto object-contain" />
+                </Link>
+
+                <button onClick={toggleMenu} className="p-2 text-slate-600 hover:text-emerald-600">
+                    {isOpen ? <X size={26} /> : <Menu size={26} />}
+                </button>
+            </header>
+
+           
+            <div 
+                className={`fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[105] lg:hidden transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+                onClick={toggleMenu}
+            />
+
+            
+            <header className={`
+                fixed lg:sticky top-0 right-0 lg:left-0 h-screen bg-emerald-700 border-l lg:border-r border-slate-100 flex flex-col items-center py-6 z-[110] transition-transform duration-300
+                w-72 md:w-80 lg:w-72
+                ${isOpen ? 'translate-x-0' : 'translate-x-full lg:translate-x-0'}
+            `}>
+                
+                <div className="w-full flex flex-row justify-between items-center mb-8 px-6">
+                    <button onClick={toggleMenu} className="lg:hidden p-2 text-slate-400 hover:text-emerald-600">
+                        <X size={22} />
+                    </button>
+
+                    <span className="flex-1 text-center font-black text-slate-400 text-[10px] tracking-[0.2em] uppercase lg:text-left">
+                        Painel Analytics
+                    </span>
+
+                    <Link href="/" className="hidden lg:flex p-2 hover:bg-slate-50 rounded-xl transition-colors group">
+                        <Home size={18} className="text-slate-400 group-hover:text-emerald-500" />
+                    </Link>
+                </div>
+
+                <div className="w-full flex flex-col gap-1.5 px-4 overflow-y-auto">
+                    {options.map((option, index) => {
+                        const Icon = option.icon;
+                        const isActive = activeView === option.label;
+                        const isHome = option.label === "Home";
+
+                        const content = (
+                            <>
+                                <Icon size={20} className={isActive ? 'text-emerald-600' : 'text-slate-400 group-hover:text-slate-600'} />
+                                <span className={`text-sm ${isActive ? 'font-black tracking-tight' : 'font-medium'}`}>
+                                    {option.label}
+                                </span>
+                                
+                               
+                                {isActive && (
+                                    <div className="absolute right-4 w-1.5 h-1.5 bg-emerald-500 rounded-full shadow-[0_0_8px_rgba(16,185,129,0.6)] animate-pulse" />
+                                )}
+                            </>
+                        );
+
+                        const baseClass = `
+                            flex gap-3 px-4 py-3.5 w-full cursor-pointer transition-all duration-200 rounded-2xl
+                            items-center group relative
+                            ${isActive 
+                                ? 'bg-emerald-50 text-emerald-700' 
+                                : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'
+                            }
+                        `;
+
+                        return isHome ? (
+                            <Link key={index} href="/" className={baseClass}>{content}</Link>
+                        ) : (
+                            <button key={index} onClick={() => handleSelect(option.label)} className={baseClass}>
+                                {content}
+                            </button>
+                        );
+                    })}
+                </div>
+
+                <div className="mt-auto w-full px-6 pt-6 border-t border-slate-50" />
+            </header>
+        </>
+    )
+}
+
+

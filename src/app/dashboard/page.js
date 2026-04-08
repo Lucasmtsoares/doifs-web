@@ -55,7 +55,7 @@ export default function Dashboard() {
 
             {/* Painel Principal com Scroll */}
             {/* AJUSTE: pt-16 no mobile para dar espaço ao Header fixo que criamos na Sidebar */}
-            <div className="flex-1 h-screen overflow-y-auto pt-16 lg:pt-0">
+            <div className="flex-1 w-full pt-32 lg:pt-0 xl:ml-72 transition-all duration-300 ">
                 
                 {/* AJUSTE: p-4 no mobile, p-8/pt-10 no desktop */}
                 <div className="max-w-[1400px] mx-auto w-full p-4 md:p-8 lg:pt-10">           
