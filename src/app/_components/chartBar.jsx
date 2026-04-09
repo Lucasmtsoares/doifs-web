@@ -219,7 +219,7 @@ export function ChartLineMultianual({ context }) {
               {totalDisplaySum.toLocaleString('pt-BR')} registros <TrendingUp className="h-4 w-4 text-emerald-500" />
             </div>
             <div className="text-[10px] sm:text-[12px] font-medium text-slate-400">
-               {instituicao} • {activeSerie === 'both' ? 'Soma total' : 'Métrica individual'}
+               Total com base nos filtros
             </div>
           </div>
 

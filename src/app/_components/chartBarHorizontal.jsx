@@ -192,7 +192,7 @@ export function ChartBarLabelCustom({ context }) {
               {totalRankingSum.toLocaleString('pt-BR')} atos <TrendingUp className="h-4 w-4 text-emerald-500" />
             </div>
             <div className="text-[10px] sm:text-[12px] font-medium text-slate-400">
-              Soma do Top 10 Institucional
+              Somatório do Top 10 do último ano
             </div>
           </div>
           <div className="flex items-center gap-1.5 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-100">
