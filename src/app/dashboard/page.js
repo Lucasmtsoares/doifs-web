@@ -68,7 +68,7 @@ export default function Dashboard() {
                     {/* DEMAIS VISUALIZAÇÕES (Gráficos) */}
                     <div className={activeView !== "Visão geral" ? "block" : "hidden"}>
                         {/* AJUSTE: Gap menor no mobile (gap-4) e maior no desktop (gap-8) */}
-                        <div className="flex flex-col gap-4 md:gap-8 max-w-7xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500">
+                        <div className="flex flex-col gap-4 md:gap-8 max-w-7xl mx-auto pb-10 lg:pt-24 xl:pt-0 xl:pb-0 animate-in fade-in slide-in-from-bottom-4 duration-500">
                             
                             {/* Os cards de KPI agora precisam ser responsivos internamente */}
                             <CardDashboard context={currentContext} />
