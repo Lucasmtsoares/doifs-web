@@ -18,9 +18,17 @@ import {
   Info,
   BarChart3,
   TrendingUp,
-  Filter,
+  Calendar,
   ChevronLeft
 } from 'lucide-react';
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 // --- Sub-componente: Círculo de Progresso ---
 const MiniProgress = ({ percent }) => {
@@ -97,18 +105,43 @@ const StatCard = ({ title, value, totalGeneral }) => {
 export function Overview() {
   const [apiData, setApiData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [selectedYear, setSelectedYear] = useState(2024);
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+  const [availableYears, setAvailableYears] = useState([]); // Estado para anos dinâmicos
 
   const [showHelp, setShowHelp] = useState(true);
   const scrollContainerRef = useRef(null);
 
   useEffect(() => {
-    axios.get("api/dashboard/totals")
-      .then((res) => {
-        setApiData(res.data);
+    async function fetchData() {
+      setLoading(true);
+      try {
+        const response = await axios.get("api/dashboard/totals");
+        const data = response.data;
+
+        setApiData(data);
+
+        if (data.years && data.years.length > 0) {
+          setAvailableYears(data.years);
+
+          // Lógica para selecionar o ano anterior ao atual
+          const currentYear = new Date().getFullYear();
+          const previousYear = currentYear - 1;
+
+          // Verifica se o ano anterior existe na lista da API, 
+          // caso contrário, pega o primeiro da lista
+          const yearToSelect = data.years.includes(previousYear)
+            ? previousYear
+            : data.years[0];
+
+          setSelectedYear(yearToSelect);
+        }
+      } catch (error) {
+        console.error("Erro ao carregar indicadores:", error);
+      } finally {
         setLoading(false);
-      })
-      .catch(() => setLoading(false));
+      }
+    }
+    fetchData();
   }, []);
 
   const handleScroll = () => {
@@ -221,19 +254,37 @@ export function Overview() {
         <div className="bg-white p-4 sm:p-8 rounded-2xl border border-slate-100 shadow-sm mt-6">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
             <div className="flex items-center gap-3">
-              <BarChart3 size={20} className="text-emerald-600" />
-              <h2 className="text-lg font-extrabold text-slate-800 tracking-tight">Evolução Mensal</h2>
+              <div className="bg-emerald-50 p-2.5 rounded-2xl">
+                <BarChart3 size={20} className="text-emerald-600" />
+              </div>
+              <h2 className="text-lg font-extrabold text-slate-800 tracking-tight">
+                Evolução Mensal
+              </h2>
             </div>
 
-            <select
-              value={selectedYear}
-              onChange={(e) => setSelectedYear(Number(e.target.value))}
-              className="w-full sm:w-auto bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-sm font-semibold text-slate-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/10 transition-all"
-            >
-              {[2026, 2025, 2024, 2023, 2022, 2019, 2018].map(y => (
-                <option key={y} value={y}>{y}</option>
-              ))}
-            </select>
+            {/* Seletor de Anos Profissional com Ícone de Calendário */}
+            <div className="flex items-center gap-2 w-full sm:w-auto border-t sm:border-t-0 pt-3 sm:pt-0">
+              <Calendar size={16} className="text-slate-400 shrink-0" />
+              <Select
+                value={String(selectedYear)}
+                onValueChange={(value) => setSelectedYear(Number(value))}
+              >
+                <SelectTrigger className="w-full sm:w-[140px] bg-white rounded-xl border-slate-200 h-10 sm:h-11 focus:ring-emerald-500/10">
+                  <SelectValue placeholder="Ano" />
+                </SelectTrigger>
+                <SelectContent className="rounded-xl border-slate-100 shadow-xl">
+                  {availableYears.map(year => (
+                    <SelectItem
+                      key={year}
+                      value={String(year)}
+                      className="rounded-lg focus:bg-emerald-50 focus:text-emerald-700"
+                    >
+                      {year}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
 
           <div className="h-[250px] sm:h-[350px] w-full">
