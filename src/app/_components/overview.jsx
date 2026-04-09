@@ -153,7 +153,7 @@ export function Overview() {
 
         {/* Cabeçalho com fundo para melhor agrupamento visual */}
         <div className="
-          bg-white p-4 sm:p-6 rounded-3xl border border-slate-100 shadow-sm 
+          bg-white p-2 sm:p-6 rounded-3xl border border-slate-100 shadow-sm 
           flex flex-col sm:flex-row sm:items-center gap-3 
           mb-8 sm:mb-12">
           <div className="flex items-center gap-3">
@@ -164,15 +164,6 @@ export function Overview() {
               Visão Geral
             </h1>
           </div>
-
-          <span className="
-    bg-emerald-50 text-emerald-700 text-[10px] font-bold 
-    px-4 py-2 rounded-full border border-emerald-100 
-    sm:ml-auto flex items-center gap-1.5 self-start sm:self-center
-  ">
-            <Info size={14} />
-            Total: {totalGeral.toLocaleString()}
-          </span>
         </div>
 
         {/* Seção de Cards */}

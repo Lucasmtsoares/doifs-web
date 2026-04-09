@@ -7,33 +7,54 @@ import { format, parseISO } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
 // --- Sub-componente: Stat Card Padronizado ---
-const StatCard = ({ title, value, description, date, Icon, iconColor, bgColor, textColor }) => {
+// --- cardDashboard.jsx ---
+
+const StatCard = ({ title, value, description, Icon, iconColor, bgColor, textColor }) => {
     const bgClass = bgColor || "bg-white";
     const borderClass = bgColor ? "border-emerald-700" : "border-slate-100";
     const titleColorClass = textColor ? "text-emerald-100" : "text-slate-400";
     const valueColorClass = textColor ? "text-white" : "text-slate-800";
     const descColorClass = textColor ? "text-emerald-50" : "text-slate-400";
-    const dateColorClass = textColor ? "text-white bg-emerald-700" : "text-emerald-600 bg-emerald-50";
 
     return (
-        <div className={`${bgClass} p-5 rounded-2xl border ${borderClass} shadow-sm flex flex-row items-center justify-between h-[100px] sm:h-[120px] hover:shadow-md transition-all group overflow-hidden`}>
-            <div className="flex-1 flex flex-col justify-between h-full pr-3 min-w-0">
-                <div>
-                    <p className={`${titleColorClass} text-[10px] sm:text-[11px] font-bold uppercase tracking-wider mb-1 truncate`}>
-                        {title}
-                    </p>
-                    <h3 className={`font-medium tracking-tighter ${valueColorClass} ${typeof value === 'string' && value.length > 8 ? 'text-xl' : 'text-2xl sm:text-3xl'} truncate`}>
-                        {typeof value === 'number' ? value.toLocaleString() : value || '---'}
-                    </h3>
-                </div>
-                <div className="flex flex-col gap-0.5 mt-auto">
-                    <p className={`text-[10px] ${descColorClass} italic truncate`}>{description}</p>
-                </div>
+        <div className={`
+            ${bgClass} p-4 rounded-2xl border ${borderClass} shadow-sm 
+            flex flex-col justify-between
+            min-h-[115px] sm:h-[125px] 
+            hover:shadow-md transition-all group min-w-0 w-full
+        `}>
+            {/* Título no Topo */}
+            <div className="w-full mb-1">
+                <p className={`${titleColorClass} text-[10px] sm:text-[11px] font-bold uppercase tracking-wider truncate block`}>
+                    {title}
+                </p>
             </div>
 
-            <div className="group-hover:scale-105 transition-transform flex items-center justify-center flex-shrink-0 ml-1">
-                <div className={`w-[44px] h-[44px] sm:w-[50px] sm:h-[50px] rounded-full flex items-center justify-center ${textColor ? 'bg-emerald-700' : 'bg-slate-50 border border-slate-100'}`}>
-                    <Icon className={`w-4 h-4 sm:w-5 sm:h-5 ${iconColor || 'text-slate-400'}`} strokeWidth={textColor ? 3 : 2} />
+            {/* Conteúdo Inferior: Valor e Ícone lado a lado */}
+            <div className="flex items-end justify-between gap-2 mt-auto">
+                
+                {/* Lado Esquerdo: Valor e Descrição (Ocupa o espaço livre com flex-1) */}
+                <div className="flex-1 flex flex-col min-w-0">
+                    <h3 className={`
+                        font-bold tracking-tight ${valueColorClass} 
+                        ${typeof value === 'string' && value.length > 8 ? 'text-lg' : 'text-xl sm:text-2xl'} 
+                        truncate leading-none mb-1
+                    `}>
+                        {typeof value === 'number' ? value.toLocaleString() : value || '---'}
+                    </h3>
+                    <p className={`text-[9px] sm:text-[10px] ${descColorClass} font-medium italic opacity-70 truncate`}>
+                        {description}
+                    </p>
+                </div>
+
+                {/* Lado Direito: Ícone (Tamanho fixo) */}
+                <div className="flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+                    <div className={`
+                        w-[40px] h-[40px] sm:w-[48px] sm:h-[48px] rounded-xl flex items-center justify-center 
+                        ${textColor ? 'bg-emerald-700' : 'bg-slate-50 border border-slate-50'}
+                    `}>
+                        <Icon className={`w-4 h-4 sm:w-5 sm:h-5 ${iconColor || 'text-slate-400'}`} strokeWidth={textColor ? 3 : 2} />
+                    </div>
                 </div>
             </div>
         </div>
@@ -43,7 +64,7 @@ const StatCard = ({ title, value, description, date, Icon, iconColor, bgColor, t
 export function CardDashboard({ context }) {
     const [data, setData] = useState(null);
     const [mounted, setMounted] = useState(false);
-    
+
     // Estados para o Carrossel
     const [showHelp, setShowHelp] = useState(true);
     const scrollContainerRef = useRef(null);
@@ -114,16 +135,21 @@ export function CardDashboard({ context }) {
 
     return (
         <div className="w-full">
-            {/* Cabeçalho */}
-            <div className="flex items-center gap-3 mb-6 sm:mb-10 border-b border-slate-100 pb-5">
-                <TrendingUp size={24} className="text-emerald-600" />
-                <h1 className="text-xl sm:text-2xl font-black tracking-tighter text-slate-900">
-                    {context.label}
-                </h1>
-                <span className="hidden sm:flex bg-emerald-50 text-emerald-700 text-[11px] font-bold px-3 py-1 rounded-full border border-emerald-100 ml-auto items-center gap-1.5">
-                    <Info size={14} />
-                    Volume histórico: {total_geral.toLocaleString()} registros
-                </span>
+            {/* Cabeçalho com fundo para padronização visual */}
+            <div className="
+                bg-white p-2 sm:p-6 rounded-3xl border border-slate-100 shadow-sm 
+                flex flex-col sm:flex-row sm:items-center gap-3 
+                mb-8 sm:mb-12
+">
+                <div className="flex items-center gap-3">
+                    {/* Container de ícone destacado para combinar com o novo padrão */}
+                    <div className="bg-emerald-50 p-2.5 rounded-2xl">
+                        <TrendingUp size={24} className="text-emerald-600 flex-shrink-0" />
+                    </div>
+                    <h1 className="text-xl sm:text-2xl font-black tracking-tighter text-slate-900">
+                        {context.label}
+                    </h1>
+                </div>
             </div>
 
             <div className="flex flex-col gap-4">
@@ -153,13 +179,13 @@ export function CardDashboard({ context }) {
                     </div>
 
                     {/* Container do Carrossel / Grid Desktop */}
-                    <div 
+                    <div
                         ref={scrollContainerRef}
                         onScroll={handleScroll}
-                        className="flex items-center overflow-x-auto pb-4 gap-4 snap-x snap-mandatory scrollbar-hide lg:grid lg:grid-cols-4 lg:overflow-visible lg:pb-0 pl-8 lg:pl-0"
+                        className="flex items-center overflow-x-auto pb-4 gap-4 snap-x snap-mandatory scrollbar-hide lg:grid lg:grid-cols-4 lg:overflow-visible lg:pb-0 pl-10 lg:pl-0"
                     >
                         {/* Card Série A */}
-                        <div className="min-w-[calc(50%-8px)] snap-center lg:min-w-full">
+                        <div className="min-w-[85%] sm:min-w-[45%] lg:min-w-full snap-center flex-shrink-0">
                             <StatCard
                                 title={`TOTAL ${context.serieA.label}`}
                                 value={types_counts[context.serieA.key] || 0}
@@ -170,7 +196,7 @@ export function CardDashboard({ context }) {
                         </div>
 
                         {/* Card Série B */}
-                        <div className="min-w-[calc(50%-8px)] snap-center lg:min-w-full">
+                        <div className="min-w-[85%] sm:min-w-[45%] lg:min-w-full snap-center flex-shrink-0">
                             <StatCard
                                 title={`TOTAL ${context.serieB.label}`}
                                 value={types_counts[context.serieB.key] || 0}
@@ -181,7 +207,7 @@ export function CardDashboard({ context }) {
                         </div>
 
                         {/* Card Ato Mais Recente */}
-                        <div className="min-w-[calc(50%-8px)] snap-center lg:min-w-full">
+                        <div className="min-w-[85%] sm:min-w-[45%] lg:min-w-full snap-center flex-shrink-0">
                             <StatCard
                                 title="Ato mais recente"
                                 value={latest ? latest.acronym : '---'}
