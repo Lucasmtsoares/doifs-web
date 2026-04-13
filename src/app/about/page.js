@@ -31,8 +31,7 @@ export default function SobrePage() {
                     Visão do Futuro
                 </h2>
                 <p className="text-slate-600 leading-relaxed text-sm md:text-base">
-                    Almejamos ser a principal ferramenta de transparência para a Rede Federal, 
-                    utilizando tecnologia de ponta para análise preditiva de dados governamentais.
+                    O DOIFS nasceu para ser a maior referência em observação e transparência da Rede Federal. Utilizamos inteligência de dados e análise preditiva para transformar informações governamentais em conhecimento acessível. Um ecossistema tecnológico moderno, gratuito e aberto a todos.
                 </p>
             </div>
         </div>
@@ -55,3 +54,8 @@ export default function SobrePage() {
     </PageLayout>
   );
 }
+
+/*
+A ideia do DOIFS nasceu em 2023 como um simples projeto de pesquisa de iniciação cientifica PIBITI, no laboratorio de engenharia de dados do IFAL - Campus Arapiraca. Na epoca foi identificada uma lacuna quanto a disponibilização de atos de pessoal da Rede Federal. Para o acesso a atos de nomeação, por exemplo era preciso a busca atraves do Diarío Oficial da União (DOU). Todavia, a busca era "solta, imprecisa e demorada. Mesmo sendo uma das maiores plataformas que colaboram para a transparencia de informação, O DOU era dificultuoso e limitado na disponibilização de filtros eficientes para busca de registros especificos. E com isso, percebeu-se a necessidade de uma camada que trouxesse essas informações pertinentes a Rede das IFs para o publico geral e interessado. Inicialemente, foram trabalhadas os atos de nomeação e exoneração do escopo dos atos de pessoal
+
+*/
