@@ -21,7 +21,7 @@ export function Header() {
                 {/* Logo */}
                 <Link href="/" className="transition-transform hover:scale-105 active:scale-95">
                     <img 
-                        src="logo-doifs-v1.png" 
+                        src="logo.png" 
                         alt="Logo Doifs" 
                         className="w-[140px] md:w-[180px] h-auto object-contain" 
                     />

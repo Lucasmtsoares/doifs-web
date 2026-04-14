@@ -33,7 +33,7 @@ export function SidebarMenu({ activeView, onSelectView }) {
                 
                 <div className="flex items-center justify-between px-5 py-3 border-b border-slate-50">
                     <Link href="/" className="transition-transform active:scale-95">
-                        <img src="/logo-doifs-v1.png" alt="Logo" className="h-6 w-auto object-contain" />
+                        <img src="/logo.png" alt="Logo Doifs" className="h-12 w-auto object-contain" />
                     </Link>
 
                     <Link href="/" className="p-2.5 bg-slate-50 text-slate-500 rounded-xl hover:text-emerald-600 active:bg-emerald-50 transition-colors">
@@ -118,7 +118,7 @@ export function SidebarMenu({ activeView, onSelectView }) {
 
                     {/* Logo */}
                     <img 
-                        src="/logo-doifs-v1.png" 
+                        src="/logo.png" 
                         alt="Logo Doifs" 
                         className="w-[140px] md:w-[180px] h-auto object-contain"
                     />
