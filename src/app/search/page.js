@@ -1,5 +1,5 @@
 
-import { Suspense } from "react";
+import { Suspense, Spinner } from "react";
 import { Header } from "../_components/header";
 import { Form } from "../_components/form";
 import { SearchContent } from "../_components/searchContent";

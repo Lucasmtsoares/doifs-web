@@ -2,7 +2,7 @@
 import { Header } from "./_components/header";
 import { Form } from "./_components/form";
 import { TypewriterClient } from "./_components/TypewriterClient";
-import { Suspense } from "react";
+import { Suspense, Spinner } from "react";
 
 export default function Home() {
   return (
@@ -37,7 +37,7 @@ export default function Home() {
 
         {/* Container do Form com respiro nas bordas mobile */}
         <div className="w-full max-w-5xl mx-auto px-1 sm:px-0">
-          <Suspense fallback={<div>Carregando...</div>}>
+          <Suspense fallback={<Spinner />}>
             <Form />
           </Suspense>
         </div>
